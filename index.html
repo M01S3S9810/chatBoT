@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chatbot da Escola</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Six+Caps&display=swap');
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #082b2b;
+    }
+
+    .chat-container {
+      max-width: 400px;
+      margin: 0 auto;
+      border: 1px solid #000000;
+      padding: 20px;
+      border-radius: 5px;
+      background-color: white;
+    }
+
+    .chat-container p {
+      margin: 0 0 10px;
+    }
+
+    .user-message {
+      text-align: right;
+    }
+
+    .bot-message {
+      text-align: left;
+    }
+
+    .chat-input {
+      width: 100%;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+
+    .chat-submit {
+      margin-top: 10px;
+      width: 100%;
+      padding: 5px;
+      box-sizing: border-box;
+      background-color: #000000;
+      color: white;
+      border: none;
+      border-radius: 3px;
+    }
+    h1{
+        color: rgb(235, 235, 235);
+        text-align: center;
+        font-size: 80px;
+    }
+    p{
+        text-align: center;
+    }
+
+    h1{
+        font-family: 'Six Caps', sans-serif;;
+    }
+    h2{
+        text-align: center;
+        font-size: 50px;
+      }
+    img{
+      height: 100px;
+      width: 100px;
+
+    }
+    p.info, h2{
+      color: aliceblue;
+    }
+
+  </style>
+</head>
+<body>
+  <h1>Sida</h1>
+  <p class="info">Sistema de integração e desempenho Acadêmico</p>
+  <p class="info">Servidores. Usem nosso serviço!🚀</p>
+
+  <div class="chat-container">
+    <h3>
+      <img src="Brown Beige Simple Anime Discord Avatar.png" alt="Imagem da assistente">
+    </h3>
+    <h4>Meu nome é Amanda, sua assistente</h4>
+    
+    <div class="chat-log" id="chat-log">
+      <p class="bot-message">Olá! Como posso ajudar você?</p>
+    </div>
+    <input type="text" class="chat-input" id="user-input" placeholder="Digite sua mensagem..." />
+    <button class="chat-submit" onclick="sendMessage()">Enviar</button>
+  </div>
+
+  
+  <script>
+    const botResponses = {
+      greetings: [
+        "Olá! Bem-vindo à nossa escola. Eu sou a Amanda. Como posso ajudar você?",
+        "Olá! Sou Amanda, assistente virtual da escola. Como posso auxiliar?",
+        "Oi! Estou aqui para responder suas perguntas sobre a escola. Como posso ser útil?"
+      ],
+      courses: [
+        "Oferecemos uma variedade de cursos, incluindo matemática, ciências, história e línguas estrangeiras. Qual curso você está interessado(a)?",
+        "Temos cursos abrangentes em várias disciplinas, desde literatura até ciências. Sobre qual curso você deseja saber mais?"
+      ],
+      enrollment: [
+        "Para se matricular em nossa escola, você pode visitar a secretaria durante o horário comercial ou preencher o formulário de matrícula online em nosso site. Como mais posso ajudar?",
+        "As matrículas estão abertas! Você pode se inscrever pessoalmente na secretaria ou acessar nosso site para obter mais informações sobre a matrícula. Alguma outra dúvida?"
+      ],
+      library: [
+        "Nossa biblioteca é um ótimo recurso para os alunos. Temos uma ampla variedade de livros, desde clássicos até livros didáticos. Como posso ajudar você com relação à biblioteca?",
+        "Desde Machado de Assis até clássicos, é o que dispomos",
+        "A biblioteca da escola é um lugar fantástico para explorar diferentes livros e expandir seu conhecimento. Existe algo específico sobre a biblioteca que você gostaria de saber?",
+        "O prazo para devolução dos livros na biblioteca é de até 15 dias. Caso ultrapasse o aluno estará sujeito a multas "
+    ],
+      support: [
+        "Oferecemos diversos serviços de apoio aos alunos, incluindo programas de tutoria, orientação vocacional e suporte acadêmico. Como posso auxiliar você?",
+        "Nosso objetivo é fornecer todo o suporte necessário para o sucesso dos alunos. Se você precisar de ajuda adicional, como orientação ou tutoria, é só me falar!"
+      ],
+      unknown: [
+        "Desculpe, não entendi. Poderia reformular sua pergunta?",
+        "Peço desculpas, mas não tenho informações sobre isso. Você poderia tentar perguntar de outra forma?",
+        "Não tenho certeza do que você está perguntando. Você poderia ser mais específico?",
+        "Se me tratar mal, será banido"
+    ]
+    };
+
+    function sendMessage() {
+      const userInput = document.getElementById("user-input").value;
+      if (userInput.trim() !== "") {
+        appendMessage(userInput, "user-message");
+        document.getElementById("user-input").value = "";
+        processUserInput(userInput);
+      }
+    }
+
+    function processUserInput(userInput) {
+      const normalizedInput = userInput.toLowerCase();
+
+      if (normalizedInput.includes("olá") || normalizedInput.includes("oi") || normalizedInput.includes("bom dia") || normalizedInput.includes("boa tarde") || normalizedInput.includes("boa noite")) {
+        sendRandomBotResponse(botResponses.greetings);
+      } else if (normalizedInput.includes("curso") || normalizedInput.includes("cursos")) {
+        sendRandomBotResponse(botResponses.courses);
+      } else if (normalizedInput.includes("matrícula") || normalizedInput.includes("inscrição")) {
+        sendRandomBotResponse(botResponses.enrollment);
+      } else if (normalizedInput.includes("biblioteca") || normalizedInput.includes("livros")) {
+        sendRandomBotResponse(botResponses.library);
+      } else if (normalizedInput.includes("apoio") || normalizedInput.includes("suporte")) {
+        sendRandomBotResponse(botResponses.support);
+      } else {
+        sendRandomBotResponse(botResponses.unknown);
+      }
+    }
+
+    function sendRandomBotResponse(responseOptions) {
+      const randomIndex = Math.floor(Math.random() * responseOptions.length);
+      const botResponse = responseOptions[randomIndex];
+      appendMessage(botResponse, "bot-message");
+    }
+
+    function appendMessage(message, className) {
+      const chatLog = document.getElementById("chat-log");
+      const messageElement = document.createElement("p");
+      messageElement.classList.add(className);
+      messageElement.textContent = message;
+      chatLog.appendChild(messageElement);
+    }
+  </script>
+
+  <h2>Mais informações sobre a gente</h2>
+
+  <p class="info">A escola do seu futuro! Garanta já a sua vaga</p>
+</body>
+</html>
